@@ -22,6 +22,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 
 public class CameraActivity extends Activity {
@@ -30,20 +31,22 @@ public class CameraActivity extends Activity {
     private static Context context;
     private static Resources resources;
     private static String packageName;
+    private static CallbackContext callback;
     
     private static final String TAG = "CameraActivity";
     
-    public CameraActivity(CordovaInterface cordovaInstance) {
+    public CameraActivity(CordovaInterface cordovaInstance, CallbackContext callbackContext) {
 		cordova = cordovaInstance;
         context = cordova.getActivity().getApplicationContext();
         resources = context.getResources();                       
         packageName = context.getPackageName();
+        callback = callbackContext;
 
         cordova.getActivity().runOnUiThread(new Runnable() {
              @Override
              public void run() {
                 cordova.getActivity().setContentView(resources.getIdentifier("activity_camera", "layout", packageName));
-                cordova.getActivity().getFragmentManager().beginTransaction().replace(resources.getIdentifier("container", "id", packageName), Camera2VideoFragment.newInstance(cordova)).commit();
+                cordova.getActivity().getFragmentManager().beginTransaction().replace(resources.getIdentifier("container", "id", packageName), Camera2VideoFragment.newInstance(cordova, callback)).commit();
             }
         });
 	}

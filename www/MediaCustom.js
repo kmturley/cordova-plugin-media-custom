@@ -11,18 +11,34 @@ var argscheck = require('cordova/argscheck'),
     mediaCustomExport = {};
 
 /**
- * Example function
+ * Show camera
  * @param {Function} successCallback
  * @param {Function} errorCallback
  * @param {Object} options
  */
-mediaCustomExport.example = function (successCallback, errorCallback, options) {
+mediaCustomExport.show = function (successCallback, errorCallback, options) {
     'use strict';
-    argscheck.checkArgs('fFO', 'MediaCustom.example', arguments);
+    argscheck.checkArgs('fFO', 'MediaCustom.show', arguments);
     options = options || {};
     var getValue = argscheck.getValue,
         args = [getValue(options.option, 'option-default-value'), getValue(options.test, 3)];
-    exec(successCallback, errorCallback, "MediaCustom", "example", args);
+    exec(successCallback, errorCallback, "MediaCustom", "show", args);
+};
+
+
+/**
+ * Hide camera
+ * @param {Function} successCallback
+ * @param {Function} errorCallback
+ * @param {Object} options
+ */
+mediaCustomExport.hide = function (successCallback, errorCallback, options) {
+    'use strict';
+    argscheck.checkArgs('fFO', 'MediaCustom.hide', arguments);
+    options = options || {};
+    var getValue = argscheck.getValue,
+        args = [getValue(options.option, 'option-default-value'), getValue(options.test, 3)];
+    exec(successCallback, errorCallback, "MediaCustom", "hide", args);
 };
 
 module.exports = mediaCustomExport;

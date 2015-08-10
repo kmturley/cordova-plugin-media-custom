@@ -30,7 +30,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/texture"
-        android:background="#4285f4">
+        android:background="#000000"
+        android:alpha="0.8" >
 
         <Button
             android:id="@+id/video"

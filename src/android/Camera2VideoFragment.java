@@ -37,6 +37,7 @@ import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -51,6 +52,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 
 import java.io.File;
@@ -72,6 +74,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     private static Context context;
     private static Resources resources;
     private static String packageName;
+    private static CallbackContext callback;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -205,11 +208,12 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
 
     };
 
-    public static Camera2VideoFragment newInstance(CordovaInterface cordovaInstance) {
+    public static Camera2VideoFragment newInstance(CordovaInterface cordovaInstance, CallbackContext callbackContext) {
 		cordova = cordovaInstance;
         context = cordova.getActivity().getApplicationContext();
         resources = context.getResources();                       
         packageName = context.getPackageName();
+        callback = callbackContext;
             
         Camera2VideoFragment fragment = new Camera2VideoFragment();
         fragment.setRetainInstance(true);
@@ -533,6 +537,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         } catch (IOException e) {
             Log.d(TAG, "file.error: " + e.getMessage());
         }
+        Log.d(TAG, "file uri: " + Uri.fromFile(file));
         return file;
         //return new File(context.getExternalFilesDir(null), "video.mp4");
     }
@@ -559,10 +564,12 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         mMediaRecorder.reset();
         Activity activity = cordova.getActivity();
         if (null != activity) {
-            Toast.makeText(activity, "Video saved: " + getVideoFile(activity).getAbsolutePath(),
-                    Toast.LENGTH_SHORT).show();
+            callback.success(Uri.fromFile(getVideoFile(activity)).getPath());
+            //Toast.makeText(activity, "Video saved: " + getVideoFile(activity).getAbsolutePath(), Toast.LENGTH_SHORT).show();
+        } else {
+            callback.error("stopRecordingVideo.error");
         }
-        startPreview();
+        //startPreview();
     }
 
     /**

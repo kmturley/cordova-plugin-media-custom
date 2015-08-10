@@ -1,6 +1,6 @@
 # cordova-plugin-media-custom
 
-A plugin for Cordova hybrid apps which allows custom overlays on the Camera
+A plugin for Cordova hybrid apps which allows custom overlays on the Camera. Based on the Camera2Video example by the Android team.
 
 The following technologies are used in the app:
 * Apache Cordova `http://cordova.apache.org/`
