@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-media-custom" version="0.1">
+    <name>Media Custom</name>
+    <description>Cordova Media Custom Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>cordova,video, editor</keywords>
+    <js-module src="www/MediaCustom.js" name="MediaCustom">
+        <clobbers target="MediaCustom" />
+    </js-module>
+    <platform name="android">
+        <config-file target="config.xml" parent="/*">
+            <feature name="MediaCustom">
+                <param name="android-package" value="com.example.android.camera2video.MediaCustom"/>
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.CAMERA" />
+            <uses-permission android:name="android.permission.RECORD_AUDIO" />
+            <uses-permission android:name="android.permission.RECORD_VIDEO" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        </config-file>
+        <source-file src="src/android/MediaCustom.java" target-dir="src/com/example/android/camera2video" />
+        <source-file src="src/android/CameraActivity.java" target-dir="src/com/example/android/camera2video" />
+        <source-file src="src/android/Camera2VideoFragment.java" target-dir="src/com/example/android/camera2video" />
+        <source-file src="src/android/AutoFitTextureView.java" target-dir="src/com/example/android/camera2video" />
+        <resource-file src="res/layout/activity_camera.xml"  target="res/layout/activity_camera.xml" />
+        <resource-file src="res/layout/fragment_camera2_video.xml"  target="res/layout/fragment_camera2_video.xml" />
+    </platform>
+</plugin>
