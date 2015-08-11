@@ -49,6 +49,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -91,7 +92,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     /**
      * Button to record video
      */
-    private Button mButtonVideo;
+    private ImageButton mButtonVideo;
 
     /**
      * A refernce to the opened {@link android.hardware.camera2.CameraDevice}.
@@ -278,7 +279,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         mTextureView = (AutoFitTextureView) view.findViewById(resources.getIdentifier("texture", "id", packageName));
-        mButtonVideo = (Button) view.findViewById(resources.getIdentifier("video", "id", packageName));
+        mButtonVideo = (ImageButton) view.findViewById(resources.getIdentifier("video", "id", packageName));
         mButtonVideo.setOnClickListener(this);
         view.findViewById(resources.getIdentifier("info", "id", packageName)).setOnClickListener(this);
     }
@@ -313,13 +314,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
                 startRecordingVideo();
             }
         } else if (view.getId() == inf) {
-            Activity activity = cordova.getActivity();
-            if (null != activity) {
-                new AlertDialog.Builder(activity)
-                        .setMessage("This sample demonstrates how to record video using Camera2 API.")
-                        .setPositiveButton("Ok", null)
-                        .show();
-            }
+            callback.error("gallery");
         }
     }
 
@@ -545,7 +540,8 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     private void startRecordingVideo() {
         try {
             // UI
-            mButtonVideo.setText("Stop");
+            mButtonVideo.setContentDescription("Stop");
+            mButtonVideo.setImageResource(resources.getIdentifier("stop", "drawable", packageName));
             mIsRecordingVideo = true;
 
             // Start recording
@@ -558,7 +554,8 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     private void stopRecordingVideo() {
         // UI
         mIsRecordingVideo = false;
-        mButtonVideo.setText("Record");
+        mButtonVideo.setContentDescription("Record");
+        mButtonVideo.setImageResource(resources.getIdentifier("record", "drawable", packageName));
         // Stop recording
         mMediaRecorder.stop();
         mMediaRecorder.reset();

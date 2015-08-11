@@ -21,8 +21,7 @@ import android.util.Log;
  * Custom Camera Overlays
  */
 public class MediaCustom extends CordovaPlugin {
-    
-    //private static CameraActivity cameraactivity;
+
     private static final String TAG = "MediaCustom";
     
     private static Context context;
@@ -40,7 +39,6 @@ public class MediaCustom extends CordovaPlugin {
         Log.d(TAG, "action: " + action);
         
         if (action.equals("show")) {
-            //cameraactivity = new CameraActivity(cordova, callbackContext);
             cordova.getActivity().runOnUiThread(new Runnable() {
                  @Override
                  public void run() {
