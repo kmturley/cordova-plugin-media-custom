@@ -20,7 +20,6 @@
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         </config-file>
         <source-file src="src/android/MediaCustom.java" target-dir="src/com/example/android/camera2video" />
-        <source-file src="src/android/CameraActivity.java" target-dir="src/com/example/android/camera2video" />
         <source-file src="src/android/Camera2VideoFragment.java" target-dir="src/com/example/android/camera2video" />
         <source-file src="src/android/AutoFitTextureView.java" target-dir="src/com/example/android/camera2video" />
         <resource-file src="res/layout/activity_camera.xml"  target="res/layout/activity_camera.xml" />

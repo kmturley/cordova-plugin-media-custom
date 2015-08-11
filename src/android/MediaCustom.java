@@ -55,8 +55,8 @@ public class MediaCustom extends CordovaPlugin {
             //cordova.getActivity().setContentView(resources.getIdentifier("main", "layout", packageName));
             //cordova.getActivity().getFragmentManager().popBackStack();
             //cordova.getActivity().setContentView(null);
-            //cordova.getActivity().removeAllViews(); //removeAllViewsInLayout();
-            //cameraactivity = null;
+            //cordova.getActivity().removeAllViews();
+            //cordova.getActivity().removeAllViewsInLayout();
             return true;
         } else {
             //callbackContext.success(exitVal);
