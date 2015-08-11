@@ -569,7 +569,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         } else {
             callback.error("stopRecordingVideo.error");
         }
-        //startPreview();
+        startPreview();
     }
 
     /**

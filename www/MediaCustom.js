@@ -34,10 +34,7 @@ mediaCustomExport.show = function (successCallback, errorCallback, options) {
  */
 mediaCustomExport.hide = function (successCallback, errorCallback, options) {
     'use strict';
-    argscheck.checkArgs('fFO', 'MediaCustom.hide', arguments);
-    options = options || {};
-    var getValue = argscheck.getValue,
-        args = [getValue(options.option, 'option-default-value'), getValue(options.test, 3)];
+    var args = [];
     exec(successCallback, errorCallback, "MediaCustom", "hide", args);
 };
 

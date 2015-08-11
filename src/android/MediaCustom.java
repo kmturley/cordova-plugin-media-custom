@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.lang.*;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
@@ -36,7 +37,8 @@ public class MediaCustom extends CordovaPlugin {
         packageName = context.getPackageName();
         callback = callbackContext;
 
-        Log.d(TAG, "execute: " + action);
+        Log.d(TAG, "action: " + action);
+        
         if (action.equals("show")) {
             //cameraactivity = new CameraActivity(cordova, callbackContext);
             cordova.getActivity().runOnUiThread(new Runnable() {
@@ -48,7 +50,10 @@ public class MediaCustom extends CordovaPlugin {
             });
             return true;
         } else if (action.equals("hide")) {
-            cordova.getActivity().getFragmentManager().beginTransaction().remove(cordova.getActivity().getFragmentManager().findFragmentById(resources.getIdentifier("container", "id", packageName))).commit();
+            Fragment fragment = cordova.getActivity().getFragmentManager().findFragmentById(resources.getIdentifier("container", "id", packageName));
+            cordova.getActivity().getFragmentManager().beginTransaction().remove(fragment).commit();
+            //cordova.getActivity().setContentView(resources.getIdentifier("main", "layout", packageName));
+            //cordova.getActivity().getFragmentManager().popBackStack();
             //cordova.getActivity().setContentView(null);
             //cordova.getActivity().removeAllViews(); //removeAllViewsInLayout();
             //cameraactivity = null;
