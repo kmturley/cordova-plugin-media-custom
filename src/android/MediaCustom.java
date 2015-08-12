@@ -2,6 +2,7 @@ package com.example.android.camera2video;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.LOG;
 
 import org.json.JSONArray;
@@ -15,6 +16,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
+import android.view.View;
 
 /**
  * MediaCustom
@@ -48,18 +50,28 @@ public class MediaCustom extends CordovaPlugin {
             });
             return true;
         } else if (action.equals("hide")) {
-            Fragment fragment = cordova.getActivity().getFragmentManager().findFragmentById(resources.getIdentifier("container", "id", packageName));
-            cordova.getActivity().getFragmentManager().beginTransaction().remove(fragment).commit();
-            //cordova.getActivity().setContentView(resources.getIdentifier("main", "layout", packageName));
-            //cordova.getActivity().getFragmentManager().popBackStack();
-            //cordova.getActivity().setContentView(null);
-            //cordova.getActivity().removeAllViews();
-            //cordova.getActivity().removeAllViewsInLayout();
+            cordova.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Fragment fragment = cordova.getActivity().getFragmentManager().findFragmentById(resources.getIdentifier("container", "id", packageName));
+                    cordova.getActivity().getFragmentManager().beginTransaction().remove(fragment).commit();
+                    cordova.getActivity().setContentView(getView());
+                }
+            });
             return true;
         } else {
             //callbackContext.success(exitVal);
             //callbackContext.error(e.getMessage());
             return false;
+        }
+    }
+    
+    // Helper to be compile-time compatible with both Cordova 3.x and 4.x.
+    private View getView() {
+        try {
+            return (View)webView.getClass().getMethod("getView").invoke(webView);
+        } catch (Exception e) {
+            return (View)webView;
         }
     }
 }

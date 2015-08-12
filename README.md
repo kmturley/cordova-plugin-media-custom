@@ -26,6 +26,10 @@ Testing the plugin using plugman:
 Cordova caches plugins, So if you make any changes to a plugin's code you can force a reset using the following command:
 
     cordova platform remove android; cordova platform add android; cordova run android
+    
+Android Studio ignore camera output regex:
+
+    ^(?!(mm-camera|Camera3-Device|Camera3-OutputStream|BufferQueueProducer))
 
 ## Directory Layout
 
