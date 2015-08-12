@@ -13,16 +13,17 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <FrameLayout
         android:id="@+id/linearLayout1" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
         android:background="#CC000000">
 
         <ImageButton
@@ -31,7 +32,7 @@
             style="@android:style/Widget.Material.Light.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             android:padding="20dp"
             android:src="@drawable/record" />
         
@@ -41,7 +42,7 @@
             style="@android:style/Widget.Material.Light.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
+            android:layout_gravity="center|bottom"
             android:padding="20dp"
             android:src="@drawable/gallery" />
         
@@ -51,5 +52,5 @@
         android:id="@+id/texture"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/linearLayout1" />
+        android:layout_toLeftOf="@+id/linearLayout1" />
 </RelativeLayout>
