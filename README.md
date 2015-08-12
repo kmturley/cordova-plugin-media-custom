@@ -30,6 +30,10 @@ Cordova caches plugins, So if you make any changes to a plugin's code you can fo
 Android Studio ignore camera output regex:
 
     ^(?!(mm-camera|Camera3-Device|Camera3-OutputStream|BufferQueueProducer))
+    
+adb command to take a screenshot:
+
+    adb shell screencap -p | perl -pe 's/\x0D\x0A/\x0A/g' > screen.png
 
 ## Directory Layout
 

@@ -23,6 +23,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Matrix;
@@ -215,6 +216,10 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         resources = context.getResources();                       
         packageName = context.getPackageName();
         callback = callbackContext;
+        
+        final Activity activity = cordova.getActivity();
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        Log.e(TAG, "Force landscape");
             
         Camera2VideoFragment fragment = new Camera2VideoFragment();
         fragment.setRetainInstance(true);
@@ -365,6 +370,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
                     width, height, mVideoSize);
 
             int orientation = getResources().getConfiguration().orientation;
+            Log.d(TAG, "orientation: " + orientation);
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             } else {
@@ -484,6 +490,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
             return;
         }
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        Log.d(TAG, "rotation: " + rotation);
         Matrix matrix = new Matrix();
         RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
         RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
@@ -517,6 +524,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
         int orientation = ORIENTATIONS.get(rotation);
+        Log.d(TAG, "rotation: " + rotation);
         mMediaRecorder.setOrientationHint(orientation);
         mMediaRecorder.prepare();
     }
@@ -561,6 +569,8 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         mMediaRecorder.reset();
         Activity activity = cordova.getActivity();
         if (null != activity) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            Log.e(TAG, "Force landscape");
             callback.success(Uri.fromFile(getVideoFile(activity)).getPath());
             //Toast.makeText(activity, "Video saved: " + getVideoFile(activity).getAbsolutePath(), Toast.LENGTH_SHORT).show();
         } else {
