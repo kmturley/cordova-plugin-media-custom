@@ -51,7 +51,6 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Button;
 import android.widget.Toast;
 
 import org.apache.cordova.CallbackContext;
@@ -202,7 +201,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
             mCameraOpenCloseLock.release();
             cameraDevice.close();
             mCameraDevice = null;
-            Activity activity = cordova.getActivity();
+            Activity activity = getActivity();
             if (null != activity) {
                 activity.finish();
             }
@@ -217,10 +216,10 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         packageName = context.getPackageName();
         callback = callbackContext;
         
-        final Activity activity = cordova.getActivity();
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        Log.e(TAG, "Force landscape");
-            
+//        final Activity activity = cordova.getActivity();
+//        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//        Log.e(TAG, "Force landscape");
+        
         Camera2VideoFragment fragment = new Camera2VideoFragment();
         fragment.setRetainInstance(true);
         return fragment;
@@ -350,7 +349,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
      * Tries to open a {@link CameraDevice}. The result is listened by `mStateCallback`.
      */
     private void openCamera(int width, int height) {
-        final Activity activity = cordova.getActivity();
+        final Activity activity = getActivity();
         if (null == activity || activity.isFinishing()) {
             return;
         }
@@ -370,7 +369,6 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
                     width, height, mVideoSize);
 
             int orientation = getResources().getConfiguration().orientation;
-            Log.d(TAG, "orientation: " + orientation);
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             } else {
@@ -442,7 +440,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
 
                 @Override
                 public void onConfigureFailed(CameraCaptureSession cameraCaptureSession) {
-                    Activity activity = cordova.getActivity();
+                    Activity activity = getActivity();
                     if (null != activity) {
                         Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
                     }
@@ -485,12 +483,11 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
      * @param viewHeight The height of `mTextureView`
      */
     private void configureTransform(int viewWidth, int viewHeight) {
-        Activity activity = cordova.getActivity();
+        Activity activity = getActivity();
         if (null == mTextureView || null == mPreviewSize || null == activity) {
             return;
         }
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        Log.d(TAG, "rotation: " + rotation);
         Matrix matrix = new Matrix();
         RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
         RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
@@ -509,7 +506,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     }
 
     private void setUpMediaRecorder() throws IOException {
-        final Activity activity = cordova.getActivity();
+        final Activity activity = getActivity();
         if (null == activity) {
             return;
         }
@@ -524,7 +521,6 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
         int orientation = ORIENTATIONS.get(rotation);
-        Log.d(TAG, "rotation: " + rotation);
         mMediaRecorder.setOrientationHint(orientation);
         mMediaRecorder.prepare();
     }
@@ -542,7 +538,6 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         }
         Log.d(TAG, "file uri: " + Uri.fromFile(file));
         return file;
-        //return new File(context.getExternalFilesDir(null), "video.mp4");
     }
 
     private void startRecordingVideo() {
@@ -567,12 +562,9 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         // Stop recording
         mMediaRecorder.stop();
         mMediaRecorder.reset();
-        Activity activity = cordova.getActivity();
+        Activity activity = getActivity();
         if (null != activity) {
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            Log.e(TAG, "Force landscape");
             callback.success(Uri.fromFile(getVideoFile(activity)).getPath());
-            //Toast.makeText(activity, "Video saved: " + getVideoFile(activity).getAbsolutePath(), Toast.LENGTH_SHORT).show();
         } else {
             callback.error("stopRecordingVideo.error");
         }
@@ -597,7 +589,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Activity activity = cordova.getActivity();
+            final Activity activity = getActivity();
             return new AlertDialog.Builder(activity)
                     .setMessage("This device doesn't support Camera2 API.")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {

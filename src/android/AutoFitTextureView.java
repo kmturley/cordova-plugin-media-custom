@@ -18,17 +18,13 @@ package com.example.android.camera2video;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.TextureView;
-
-import org.apache.cordova.LOG;
 
 /**
  * A {@link TextureView} that can be adjusted to a specified aspect ratio.
  */
 public class AutoFitTextureView extends TextureView {
 
-    private static final String TAG = "AutoFitTextureView";
     private int mRatioWidth = 0;
     private int mRatioHeight = 0;
 
@@ -66,12 +62,6 @@ public class AutoFitTextureView extends TextureView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
-        
-        Log.d(TAG, "width: " + width);
-        Log.d(TAG, "height: " + height);
-        Log.d(TAG, "mRatioWidth: " + mRatioWidth);
-        Log.d(TAG, "mRatioHeight: " + mRatioHeight);
-        
         if (0 == mRatioWidth || 0 == mRatioHeight) {
             setMeasuredDimension(width, height);
         } else {
