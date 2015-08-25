@@ -185,6 +185,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
             startPreview();
             mCameraOpenCloseLock.release();
             if (null != mTextureView) {
+                Log.e(TAG, "mTextureView: " + mTextureView.getWidth() + " x " + mTextureView.getHeight());
                 configureTransform(mTextureView.getWidth(), mTextureView.getHeight());
             }
         }
@@ -226,7 +227,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     * In this sample, we choose a video size with 3x4 aspect ratio. Also, we don't use sizes larger
+     * In this sample, we choose a video size with 16x9 aspect ratio. Also, we don't use sizes larger
      * than 1080p, since MediaRecorder cannot handle such a high-resolution video.
      *
      * @param choices The list of available sizes
@@ -234,7 +235,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
      */
     private static Size chooseVideoSize(Size[] choices) {
         for (Size size : choices) {
-            if (size.getWidth() == size.getHeight() * 4 / 3 && size.getWidth() <= 1080) {
+            if (size.getWidth() == size.getHeight() * 16 / 9 && size.getHeight() <= 1080) {
                 return size;
             }
         }
@@ -256,11 +257,12 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     private static Size chooseOptimalSize(Size[] choices, int width, int height, Size aspectRatio) {
         // Collect the supported resolutions that are at least as big as the preview Surface
         List<Size> bigEnough = new ArrayList<Size>();
+        Log.e(TAG, "aspectRatio: " + aspectRatio.getWidth() + " x " + aspectRatio.getHeight());
         int w = aspectRatio.getWidth();
         int h = aspectRatio.getHeight();
         for (Size option : choices) {
             if (option.getHeight() == option.getWidth() * h / w &&
-                    option.getWidth() >= width && option.getHeight() >= height) {
+                    option.getWidth() <= width && option.getHeight() <= height) {
                 bigEnough.add(option);
             }
         }
@@ -293,6 +295,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         super.onResume();
         startBackgroundThread();
         if (mTextureView.isAvailable()) {
+            Log.e(TAG, "mTextureView2: " + mTextureView.getWidth() + " x " + mTextureView.getHeight());
             openCamera(mTextureView.getWidth(), mTextureView.getHeight());
         } else {
             mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
@@ -369,9 +372,12 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
                     width, height, mVideoSize);
 
             int orientation = getResources().getConfiguration().orientation;
+            Log.e(TAG, "mPreviewSize: " + mPreviewSize.getWidth() + " x " + mPreviewSize.getHeight());
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                //mTextureView.setAspectRatio(16, 9);
                 mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             } else {
+                //mTextureView.setAspectRatio(9, 16);
                 mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
             }
             configureTransform(width, height);
@@ -418,6 +424,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
             setUpMediaRecorder();
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
+            Log.e(TAG, "mPreviewSize2: " + mPreviewSize.getWidth() + " x " + mPreviewSize.getHeight());
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             mPreviewBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             List<Surface> surfaces = new ArrayList<Surface>();
@@ -490,6 +497,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
         Matrix matrix = new Matrix();
         RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
+        Log.e(TAG, "mPreviewSize3: " + mPreviewSize.getWidth() + " x " + mPreviewSize.getHeight());
         RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
         float centerX = viewRect.centerX();
         float centerY = viewRect.centerY();
@@ -516,6 +524,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         mMediaRecorder.setOutputFile(getVideoFile(activity).getAbsolutePath());
         mMediaRecorder.setVideoEncodingBitRate(10000000);
         mMediaRecorder.setVideoFrameRate(30);
+        Log.e(TAG, "mVideoSize: " + mVideoSize.getWidth() + " x " + mVideoSize.getHeight());
         mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
