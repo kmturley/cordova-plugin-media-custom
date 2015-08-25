@@ -18,6 +18,15 @@ Now navigate into the main directory and add this plugin using:
 
     cordova plugin add cordova-plugin-media-custom
     
+And use Javascript in your html page to call the plugin:
+
+    window.MediaCustom.show(function (data) {
+        window.alert('user recorded a video: ' + data);
+        window.MediaCustom.hide();
+    }, function () {
+        window.alert('user clicked on the gallery button');
+    });
+    
 Testing the plugin using plugman:
 
     npm install -g plugman
