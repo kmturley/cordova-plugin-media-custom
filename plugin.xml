@@ -21,7 +21,6 @@
         </config-file>
         <source-file src="src/android/MediaCustom.java" target-dir="src/com/example/android/camera2video" />
         <source-file src="src/android/Camera2VideoFragment.java" target-dir="src/com/example/android/camera2video" />
-        <source-file src="src/android/AutoFitTextureView.java" target-dir="src/com/example/android/camera2video" />
         <resource-file src="res/layout/activity_camera.xml" target="res/layout/activity_camera.xml" />
         <resource-file src="res/layout/fragment_camera2_video.xml" target="res/layout/fragment_camera2_video.xml" />
         <resource-file src="res/layout-land/fragment_camera2_video.xml" target="res/layout-land/fragment_camera2_video.xml" />

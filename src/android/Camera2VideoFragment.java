@@ -87,7 +87,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     /**
      * An {@link AutoFitTextureView} for camera preview.
      */
-    private AutoFitTextureView mTextureView;
+    private TextureView mTextureView;
 
     /**
      * Button to record video
@@ -284,7 +284,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mTextureView = (AutoFitTextureView) view.findViewById(resources.getIdentifier("texture", "id", packageName));
+        mTextureView = (TextureView) view.findViewById(resources.getIdentifier("texture", "id", packageName));
         mButtonVideo = (ImageButton) view.findViewById(resources.getIdentifier("video", "id", packageName));
         mButtonVideo.setOnClickListener(this);
         view.findViewById(resources.getIdentifier("info", "id", packageName)).setOnClickListener(this);
@@ -372,12 +372,14 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
                     width, height, mVideoSize);
 
             int orientation = getResources().getConfiguration().orientation;
+            /*
             Log.e(TAG, "mPreviewSize: " + mPreviewSize.getWidth() + " x " + mPreviewSize.getHeight());
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             } else {
                 mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
             }
+            */
             configureTransform(width, height);
             mMediaRecorder = new MediaRecorder();
             manager.openCamera(cameraId, mStateCallback, null);
