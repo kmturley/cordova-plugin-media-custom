@@ -374,10 +374,8 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
             int orientation = getResources().getConfiguration().orientation;
             Log.e(TAG, "mPreviewSize: " + mPreviewSize.getWidth() + " x " + mPreviewSize.getHeight());
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                //mTextureView.setAspectRatio(16, 9);
                 mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             } else {
-                //mTextureView.setAspectRatio(9, 16);
                 mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
             }
             configureTransform(width, height);
