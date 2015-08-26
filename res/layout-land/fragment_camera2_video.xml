@@ -32,22 +32,24 @@
         <ImageButton
             android:id="@+id/video"
             style="@android:style/Widget.Material.Light.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="Record"
             android:padding="20dp"
-            android:src="@drawable/record" />
+            android:src="@drawable/record"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:scaleType="fitXY" />
 
         <ImageButton
             android:id="@+id/info"
             android:contentDescription="Info"
             style="@android:style/Widget.Material.Light.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
             android:padding="20dp"
-            android:src="@drawable/gallery" />
+            android:src="@drawable/gallery"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:scaleType="fitXY" />
 
     </FrameLayout>
 

@@ -41,29 +41,44 @@ public class MediaCustom extends CordovaPlugin {
         Log.d(TAG, "action: " + action);
         
         if (action.equals("show")) {
-            cordova.getActivity().runOnUiThread(new Runnable() {
-                 @Override
-                 public void run() {
-                    cordova.getActivity().setContentView(resources.getIdentifier("activity_camera", "layout", packageName));
-                    cordova.getActivity().getFragmentManager().beginTransaction().replace(resources.getIdentifier("container", "id", packageName), Camera2VideoFragment.newInstance(cordova, callback)).commit();
-                }
-            });
+            show();
             return true;
         } else if (action.equals("hide")) {
-            cordova.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Fragment fragment = cordova.getActivity().getFragmentManager().findFragmentById(resources.getIdentifier("container", "id", packageName));
-                    cordova.getActivity().getFragmentManager().beginTransaction().remove(fragment).commit();
-                    cordova.getActivity().setContentView(getView());
-                }
-            });
+            hide();
             return true;
         } else {
             //callbackContext.success(exitVal);
             //callbackContext.error(e.getMessage());
             return false;
         }
+    }
+    
+    // show the plugin
+    public void show () {
+        cordova.getActivity().runOnUiThread(new Runnable() {
+             @Override
+             public void run() {
+                cordova.getActivity().setContentView(resources.getIdentifier("activity_camera", "layout", packageName));
+                cordova.getActivity().getFragmentManager().beginTransaction().replace(resources.getIdentifier("container", "id", packageName), Camera2VideoFragment.newInstance(cordova, callback)).commit();
+            }
+        });
+    }
+    
+    // hide the plugin
+    public void hide () {
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Fragment fragment = cordova.getActivity().getFragmentManager().findFragmentById(resources.getIdentifier("container", "id", packageName));
+                cordova.getActivity().getFragmentManager().beginTransaction().remove(fragment).commit();
+                cordova.getActivity().setContentView(getView());
+            }
+        });
+    }
+    
+    // override the back button behaviuor
+    public void onBackPressed () {
+        hide();
     }
     
     // Helper to be compile-time compatible with both Cordova 3.x and 4.x.
