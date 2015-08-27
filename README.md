@@ -27,6 +27,62 @@ And use Javascript in your html page to call the plugin:
         window.alert('user clicked on the gallery button');
     });
     
+Full example utilising the custom camera:
+
+    <a href="#" class="button" id="open">Open Camera</a>
+    <div class="video-container">
+        <video src="assets/intro.mp4" id="video" autoplay controls></video>
+    </div>
+    <div id="output">
+        <h2>Metadata</h2>
+    </div>
+    <script src="cordova.js"></script>
+    <script>
+        document.addEventListener('deviceready', function() {
+            var video = document.getElementById('video'),
+                output = document.getElementById('output');
+
+            video.addEventListener('loadeddata', function (e) {
+                // for some reason we need a delay to successfully retrieve metadata
+                window.setTimeout(function () {
+                    output.innerHTML += 'src = ' + e.target.src + '<br/>';
+                    output.innerHTML += 'duration = ' + e.target.duration + '<br/>';
+                    output.innerHTML += 'videoWidth = ' + e.target.videoWidth + '<br/>';
+                    output.innerHTML += 'videoHeight = ' + e.target.videoHeight + '<br/>';
+                }, 200);
+            });
+
+            document.getElementById('open').addEventListener('click', function () {
+                if (window.MediaCustom) {
+                    window.MediaCustom.show(function (data) {
+                        video.src = data;
+                        window.MediaCustom.hide();
+                    }, function (e) {
+                        //window.alert('MediaCustom.error: ' + JSON.stringify(e));
+                        window.MediaCustom.hide();
+                        navigator.camera.getPicture(function (data) {
+                            //window.alert('getPicture.success: ' + JSON.stringify(data));
+                            video.src = data;
+                        }, function (e) {
+                            window.alert('getPicture.error: ' + JSON.stringify(e));
+                        }, {
+                            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                            mediaType: Camera.MediaType.VIDEO,
+                            destinationType: Camera.DestinationType.FILE_URI
+                        });
+                    });
+                } else {
+                    window.alert('MediaCustom feature not supported');
+                }
+            });
+
+            document.addEventListener('backbutton', function (e) {
+                e.preventDefault();
+                window.alert('back pressed');
+            }, false);
+        });
+    </script>
+
 Testing the plugin using plugman:
 
     npm install -g plugman

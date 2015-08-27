@@ -16,6 +16,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 
 /**
@@ -24,19 +25,20 @@ import android.view.View;
  */
 public class MediaCustom extends CordovaPlugin {
 
+    public CallbackContext callbackContext;
     private static final String TAG = "MediaCustom";
     
     private static Context context;
     private static Resources resources;
     private static String packageName;
-    private static CallbackContext callback;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+        this.callbackContext = callbackContext;
+        
         context = cordova.getActivity().getApplicationContext();
         resources = context.getResources();                       
         packageName = context.getPackageName();
-        callback = callbackContext;
 
         Log.d(TAG, "action: " + action);
         
@@ -54,18 +56,20 @@ public class MediaCustom extends CordovaPlugin {
     }
     
     // show the plugin
-    public void show () {
+    public void show() {
+        Log.e(TAG, "show");
         cordova.getActivity().runOnUiThread(new Runnable() {
              @Override
              public void run() {
                 cordova.getActivity().setContentView(resources.getIdentifier("activity_camera", "layout", packageName));
-                cordova.getActivity().getFragmentManager().beginTransaction().replace(resources.getIdentifier("container", "id", packageName), Camera2VideoFragment.newInstance(cordova, callback)).commit();
+                cordova.getActivity().getFragmentManager().beginTransaction().replace(resources.getIdentifier("container", "id", packageName), Camera2VideoFragment.newInstance(cordova, callbackContext)).commit();
             }
         });
     }
     
     // hide the plugin
-    public void hide () {
+    public void hide() {
+        Log.e(TAG, "hide");
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -77,7 +81,7 @@ public class MediaCustom extends CordovaPlugin {
     }
     
     // override the back button behaviuor
-    public void onBackPressed () {
+    public void onBackPressed() {
         hide();
     }
     
