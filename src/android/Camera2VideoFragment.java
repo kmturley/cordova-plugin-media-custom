@@ -575,7 +575,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         mMediaRecorder.reset();
         Activity activity = getActivity();
         if (null != activity) {
-            callback.success(Uri.fromFile(getVideoFile(activity)).getPath());
+            callback.success(Uri.fromFile(getVideoFile(activity)).toString());
         } else {
             callback.error("stopRecordingVideo.error");
         }
