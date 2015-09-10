@@ -530,7 +530,9 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
         int orientation = ORIENTATIONS.get(rotation);
-        mMediaRecorder.setOrientationHint(orientation);
+        Log.e(TAG, "setOrientationHint: " + orientation);
+        // disabled rotation of output video for now
+        //mMediaRecorder.setOrientationHint(orientation);
         mMediaRecorder.prepare();
     }
 
