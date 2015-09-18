@@ -23,6 +23,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -40,6 +41,7 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
@@ -58,9 +60,11 @@ import org.apache.cordova.CordovaInterface;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -76,6 +80,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     private static Resources resources;
     private static String packageName;
     private static CallbackContext callback;
+    private static File currentFile;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -518,10 +523,11 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         if (null == activity) {
             return;
         }
+        currentFile = getVideoFile();
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mMediaRecorder.setOutputFile(getVideoFile(activity).getAbsolutePath());
+        mMediaRecorder.setOutputFile(currentFile.getAbsolutePath());
         mMediaRecorder.setVideoEncodingBitRate(10000000);
         mMediaRecorder.setVideoFrameRate(30);
         Log.e(TAG, "mVideoSize: " + mVideoSize.getWidth() + " x " + mVideoSize.getHeight());
@@ -536,17 +542,26 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         mMediaRecorder.prepare();
     }
 
-    private File getVideoFile(Context context) {
-        File cache = cordova.getActivity().getCacheDir();
-        cache.mkdirs();
-        File file = new File(cache.getAbsolutePath(), "video.mp4");
-        try {
-            file.createNewFile();
-            file.setWritable(true, false);
-            Log.d(TAG, "file.success: " + file);
-        } catch (IOException e) {
-            Log.d(TAG, "file.error: " + e.getMessage());
+    private File getVideoFile() {
+        File folder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), "CustomCamera");
+        folder.mkdirs();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String videoFileName = "VID_" + timeStamp + ".mp4";
+        File file = new File(folder.getAbsolutePath(), videoFileName);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                file.setWritable(true, false);
+                Log.d(TAG, "file.success: " + file);
+            } catch (IOException e) {
+                Log.d(TAG, "file.error: " + e.getMessage());
+            }
         }
+        
+        Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        scanIntent.setData(Uri.fromFile(file));
+        context.sendBroadcast(scanIntent);
+        
         Log.d(TAG, "file uri: " + Uri.fromFile(file));
         return file;
     }
@@ -575,7 +590,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         mMediaRecorder.reset();
         Activity activity = getActivity();
         if (null != activity) {
-            callback.success(Uri.fromFile(getVideoFile(activity)).toString());
+            callback.success(Uri.fromFile(currentFile).toString());
         } else {
             callback.error("stopRecordingVideo.error");
         }
