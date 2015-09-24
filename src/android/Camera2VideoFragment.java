@@ -557,11 +557,6 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
                 Log.d(TAG, "file.error: " + e.getMessage());
             }
         }
-        
-        Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        scanIntent.setData(Uri.fromFile(file));
-        context.sendBroadcast(scanIntent);
-        
         Log.d(TAG, "file uri: " + Uri.fromFile(file));
         return file;
     }
@@ -588,13 +583,19 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         // Stop recording
         mMediaRecorder.stop();
         mMediaRecorder.reset();
+        
+        // notify android about the new file
+        Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        scanIntent.setData(Uri.fromFile(currentFile));
+        context.sendBroadcast(scanIntent);
+        
         Activity activity = getActivity();
         if (null != activity) {
             callback.success(Uri.fromFile(currentFile).toString());
         } else {
             callback.error("stopRecordingVideo.error");
         }
-        startPreview();
+        //startPreview();
     }
 
     /**
