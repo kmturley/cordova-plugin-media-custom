@@ -1,6 +1,6 @@
 # cordova-plugin-media-custom
 
-A plugin for Cordova hybrid apps which allows custom overlays on the Camera. Based on the Camera2Video example by the Android team.
+A plugin for Cordova hybrid apps which allows custom overlays on the Video Camera. Based on the Camera2Video example by the Android team.
 
 The following technologies are used in the app:
 * Apache Cordova `http://cordova.apache.org/`
@@ -17,6 +17,10 @@ First open an exisiting project or create a new project using:
 Now navigate into the main directory and add this plugin using:
 
     cordova plugin add cordova-plugin-media-custom
+    
+Or use the command:
+
+    cordova plugin add https://github.com/kmturley/cordova-plugin-media-custom.git
     
 And use Javascript in your html page to call the plugin:
 
@@ -96,9 +100,13 @@ Android Studio ignore camera output regex:
 
     ^(?!(mm-camera|Camera3-Device|Camera3-OutputStream|BufferQueueProducer))
     
-adb command to take a screenshot:
+Command to take a screenshot of a connected android device:
 
     adb shell screencap -p | perl -pe 's/\x0D\x0A/\x0A/g' > screen.png
+    
+Command to capture video from a connected android device screen:
+
+    adb shell screenrecord --verbose /sdcard/ExampleName.mp4
 
 ## Directory Layout
 
