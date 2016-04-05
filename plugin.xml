@@ -19,7 +19,16 @@
             <uses-permission android:name="android.permission.RECORD_VIDEO" />
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:name="com.example.android.camera2video.MediaCustomActivity" android:label="@string/activity_name" android:theme="@style/Theme.Transparent">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
+        </config-file>
         <source-file src="src/android/MediaCustom.java" target-dir="src/com/example/android/camera2video" />
+        <source-file src="src/android/MediaCustomActivity.java" target-dir="src/com/example/android/camera2video" />
         <source-file src="src/android/Camera2VideoFragment.java" target-dir="src/com/example/android/camera2video" />
         <resource-file src="res/layout/activity_camera.xml" target="res/layout/activity_camera.xml" />
         <resource-file src="res/layout/fragment_camera2_video.xml" target="res/layout/fragment_camera2_video.xml" />
@@ -27,5 +36,6 @@
         <resource-file src="res/drawable/gallery.png"  target="res/drawable/gallery.png" />
         <resource-file src="res/drawable/record.png"  target="res/drawable/record.png" />
         <resource-file src="res/drawable/stop.png"  target="res/drawable/stop.png" />
+        <resource-file src="res/values/styles.xml" target="res/values/styles.xml" />
     </platform>
 </plugin>

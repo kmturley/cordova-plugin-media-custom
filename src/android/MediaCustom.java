@@ -1,5 +1,7 @@
 package com.example.android.camera2video;
 
+import com.example.android.camera2video.MediaCustomActivity;
+
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaWebView;
@@ -13,7 +15,10 @@ import java.io.*;
 import java.lang.*;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,21 +32,22 @@ public class MediaCustom extends CordovaPlugin {
 
     public CallbackContext callbackContext;
     private static final String TAG = "MediaCustom";
-    
+
     private static Context context;
     private static Resources resources;
     private static String packageName;
+    private Fragment cameraFragment;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         this.callbackContext = callbackContext;
-        
+
         context = cordova.getActivity().getApplicationContext();
-        resources = context.getResources();                       
+        resources = context.getResources();
         packageName = context.getPackageName();
 
         Log.d(TAG, "action: " + action);
-        
+
         if (action.equals("show")) {
             show();
             return true;
@@ -54,37 +60,45 @@ public class MediaCustom extends CordovaPlugin {
             return false;
         }
     }
-    
-    // show the plugin
+
     public void show() {
-        Log.e(TAG, "show");
+        if (cameraFragment != null) {
+            return;
+        }
+        cameraFragment = Camera2VideoFragment.newInstance(cordova, callbackContext);
         cordova.getActivity().runOnUiThread(new Runnable() {
              @Override
              public void run() {
                 cordova.getActivity().setContentView(resources.getIdentifier("activity_camera", "layout", packageName));
-                cordova.getActivity().getFragmentManager().beginTransaction().replace(resources.getIdentifier("container", "id", packageName), Camera2VideoFragment.newInstance(cordova, callbackContext)).commit();
+                FragmentManager fragmentManager = cordova.getActivity().getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(resources.getIdentifier("container", "id", packageName), cameraFragment);
+                fragmentTransaction.commit();
+
+                MediaCustomActivity.start(cordova.getActivity());
             }
         });
     }
-    
-    // hide the plugin
+
     public void hide() {
-        Log.e(TAG, "hide");
+        if (cameraFragment == null) {
+            return;
+        }
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Fragment fragment = cordova.getActivity().getFragmentManager().findFragmentById(resources.getIdentifier("container", "id", packageName));
-                cordova.getActivity().getFragmentManager().beginTransaction().remove(fragment).commit();
+                MediaCustomActivity.stop(cordova.getActivity());
+
                 cordova.getActivity().setContentView(getView());
+                FragmentManager fragmentManager = cordova.getActivity().getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.remove(cameraFragment);
+                fragmentTransaction.commitAllowingStateLoss(); // commit();
+                cameraFragment = null;
             }
         });
     }
-    
-    // override the back button behaviuor
-    public void onBackPressed() {
-        hide();
-    }
-    
+
     // Helper to be compile-time compatible with both Cordova 3.x and 4.x.
     private View getView() {
         try {

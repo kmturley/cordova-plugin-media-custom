@@ -74,7 +74,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
     private static final String TAG = "Camera2VideoFragment";
-    
+
     private static CordovaInterface cordova;
     private static Context context;
     private static Resources resources;
@@ -218,14 +218,14 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     public static Camera2VideoFragment newInstance(CordovaInterface cordovaInstance, CallbackContext callbackContext) {
 		cordova = cordovaInstance;
         context = cordova.getActivity().getApplicationContext();
-        resources = context.getResources();                       
+        resources = context.getResources();
         packageName = context.getPackageName();
         callback = callbackContext;
-        
+
 //        final Activity activity = cordova.getActivity();
 //        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 //        Log.e(TAG, "Force landscape");
-        
+
         Camera2VideoFragment fragment = new Camera2VideoFragment();
         fragment.setRetainInstance(true);
         return fragment;
@@ -282,8 +282,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(resources.getIdentifier("fragment_camera2_video", "layout", packageName), container, false);
     }
 
@@ -318,7 +317,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     public void onClick(View view) {
         int vid = resources.getIdentifier("video", "id", packageName);
         int inf = resources.getIdentifier("info", "id", packageName);
-        
+
         if (view.getId() == vid) {
             if (mIsRecordingVideo) {
                 stopRecordingVideo();
@@ -583,12 +582,12 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
         // Stop recording
         mMediaRecorder.stop();
         mMediaRecorder.reset();
-        
+
         // notify android about the new file
         Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         scanIntent.setData(Uri.fromFile(currentFile));
         context.sendBroadcast(scanIntent);
-        
+
         Activity activity = getActivity();
         if (null != activity) {
             callback.success(Uri.fromFile(currentFile).toString());
