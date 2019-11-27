@@ -1,0 +1,28 @@
+{
+  "name": "cordova-plugin-media-custom",
+  "version": "0.2.0",
+  "description": "A plugin for Cordova hybrid apps which allows custom overlays on the Video Camera. Based on the Camera2Video example by the Android team.",
+  "cordova": {
+    "id": "cordova-plugin-media-custom",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmturley/cordova-plugin-media-custom.git"
+  },
+  "keywords": [
+    "cordova",
+    "video",
+    "editor",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "kmturley",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/kmturley/cordova-plugin-media-custom/issues"
+  },
+  "homepage": "https://github.com/kmturley/cordova-plugin-media-custom#readme"
+}
