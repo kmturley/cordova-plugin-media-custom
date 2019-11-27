@@ -4,7 +4,7 @@ A plugin for Cordova hybrid apps which allows custom overlays on the Video Camer
 
 The following technologies are used in the app:
 * Apache Cordova `http://cordova.apache.org/`
-* Camera2Video `http://developer.android.com/samples/Camera2Video/index.html`
+* Camera2Video `https://github.com/android/camera-samples`
 
 ## Installation and running tasks
 
